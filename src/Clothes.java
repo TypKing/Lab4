@@ -42,7 +42,7 @@ public class Clothes {
     // По факту укус насекомого мог располовинить любого Human
     void rub(){
         for (int i = 0; i < insectsStack; i++) {
-            insects[insectsStack].bite(this);
+            insects[i].bite(this);
             owner.irritation++;
         }
         System.out.println(owner.getName() + " был укушен " + insectsStack + " раз!");

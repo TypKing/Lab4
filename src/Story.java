@@ -17,10 +17,13 @@ public class Story {
         Shorty dontknow = new Shorty("Незнайка", corridor);
         Shorty drigle = new Shorty("Дригль", corridor);
         Shorty[] shorty = new Shorty[10];
-
-        Clothes policecap = new Clothes();
-
-
+        Clothes.Insects bukashka = new Clothes.Insects("Букашка",corridor);
+        Clothes.Insects tarakashka = new Clothes.Insects("Таракашка",corridor);
+        Clothes.Insects klop = new Clothes.Insects("Клоп",corridor);
+        Clothes.Insects klesh = new Clothes.Insects("Клещ",corridor);
+        Clothes.Insects bloha = new Clothes.Insects("Блоха",corridor);
+        Clothes policecap = new Clothes("Полицейская фуражка",bukashka,tarakashka,klop,klesh,bloha);
+        policecap.setOwner(robocop);
 
         Things[] shelf = new Things[10];
         Things door = new Things("Дверь", corridor, RoomsParts.WALL);
@@ -61,9 +64,15 @@ public class Story {
         PrisonBoss.setWish(false);
         PrisonBoss.rename(room, "Мойка");
         PrisonBoss.wasteMoney(3000000, "Постройка специальной умывальни");
+        robocop.sitAndFart();
+        robocop.sitAndFart();
+        robocop.sitAndFart();
+        robocop.sitAndFart();
+        robocop.sitAndFart();
 //        Time.increaseTime();
 //        PrisonBoss.checkMoney();
         System.out.println(Time.getMinutes());
         System.exit(0);
+
     }
 }

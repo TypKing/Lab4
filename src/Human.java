@@ -15,8 +15,8 @@ public class Human extends LivingBeing {
     }
     // Метод реализует натирание всей одежды на человеке
     void rubClothes(){
-        for (Clothes clothe:clothes) {
-            clothe.rub();
+        for (int i=0;i<clothesStack;i++) {
+            clothes[i].rub();
         }
     }
     public Human(String name, Place place, Action action) {
