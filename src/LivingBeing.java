@@ -2,7 +2,7 @@ import java.util.Objects;
 
 public abstract class LivingBeing {
     protected String name;
-    protected Place place;
+    Place place;
 
     LivingBeing() {}
 

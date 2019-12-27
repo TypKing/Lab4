@@ -34,11 +34,6 @@ public class PrisonBoss extends LivingBeing {
              System.out.println("негативным");
          }
      }
-
-     public static void send(Shorty shorty, Place place){
-        shorty.changePlace(place);
-     }
-
     @Override
     public int hashCode() {
         return (int)(money/name.length());

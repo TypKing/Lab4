@@ -1,4 +1,4 @@
-import java.nio.charset.Charset;
+
 import java.util.Random;
 import static java.lang.Math.*;
 
@@ -7,13 +7,13 @@ public class Shorty extends Human implements Movable, Runnable{
     protected int degreeOfWet = 0;
     private int x;
     private int y;
-
     public Shorty(String name, Place place){
-        super(name, place,Action.DEFAULT);
+        super(name, place);
+        action = Action.DEFAULT;
         place.countShorties++;
-        place.shorties[place.countShorties-1] = this;
+//        place.shorties[place.countShorties-1] = this;
         Random random = new Random();
-         do {
+        do {
             x = random.nextInt(10);
             y = random.nextInt(10);
         }
@@ -22,24 +22,29 @@ public class Shorty extends Human implements Movable, Runnable{
     }
 
     public Shorty(String name, Place place, int x, int y){
-        super(name, place,Action.DEFAULT);
+        super(name, place);
         place.countShorties++;
-        place.shorties[place.countShorties] = this;
+//        place.shorties[place.countShorties] = this;
         this.x = x;
         this.y = y;
         place.field[x][y] = this;
     }
 
-    public void setPlace(Place place){
-        super.place = place;
-    }
-
     public Place getPlace(){
         return place;
     }
+    public void checkClothesOn(Human human,Things object) throws InterruptedException {
+        System.out.println(name + " проверяет одежду на " + human.getName());
+        if (human.clothesStack == 0){
+            System.out.println(name + " видит что одежды нет на " + human.getName() + " и следует его примеру");
+            deleteAllClothes();
+            getDown(object);
+        }
+    }
 
-    public void changePlace(Place p){
-        super.place = p;
+    public void setCoordinate(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     public void setAction(Action action) {
@@ -59,6 +64,7 @@ public class Shorty extends Human implements Movable, Runnable{
             }
         }
         if (count == shorties.length) {
+            System.out.println(getName() + " увидел как все коротышки стояли между полок без одежды");
             System.out.println(getName() + " убедился, что все коротышки слезли с полок");
         } else {
             System.out.println("Не все коротышки слезли с полок");
@@ -81,10 +87,10 @@ public class Shorty extends Human implements Movable, Runnable{
         else System.out.println(button.getName() + " уже была нажата");
     }
 
-    protected void see(Things[] things, Hole hole){
+    public void see(Things[] things, Hole hole){
         int count = 0;
         if ((things[0].getPlace() == null) && (things[1].getPlace() != null)) {
-                System.out.println(getName() + " увидел, что полки начали опускаться в " + hole.getName());
+            System.out.println(getName() + " увидел, что полки начали опускаться в " + hole.getName());
         } else {
             for (Things thing : things) {
                 if (thing.getPlace() == null) {
@@ -112,7 +118,7 @@ public class Shorty extends Human implements Movable, Runnable{
                 //должен высыхать в соответствии с тем, сколько он прошел
                 degreeOfWet -= sqrt(x*x + y*y)*random.nextInt(10)/0.001;
                 if (degreeOfWet < 0){
-                    degreeOfWet = 100;
+                    degreeOfWet = 0;
                 }
                 System.out.println(getName() + " немного высох в движении. Степень промокания: " + degreeOfWet);
             } else {
@@ -120,7 +126,7 @@ public class Shorty extends Human implements Movable, Runnable{
                 comeAcross(place.getObject(this.x + x, this.y + y));
             }
         } else {
-                System.out.println("Такое передвижение невозможно");
+            System.out.println("Такое передвижение невозможно");
         }
         Thread.sleep(300);
     }
@@ -150,8 +156,10 @@ public class Shorty extends Human implements Movable, Runnable{
             }
             System.out.println(getName() + " немного высох в движении. Степень промокания: " + degreeOfWet);
         } else {
-            System.out.println(getName() + " попытался переместиться на координаты " + (this.x + z) + " " + (this.y + w) + ", но место уже занято");
-            comeAcross(place.getObject(this.x + z, this.y + w));
+            if ((w != 0) && (z != 0)) {
+                System.out.println(getName() + " попытался переместиться на координаты " + (this.x + z) + " " + (this.y + w) + ", но место уже занято");
+                comeAcross(place.getObject(this.x + z, this.y + w));
+            }
 //                break first;
         }
 //        }
@@ -209,7 +217,7 @@ public class Shorty extends Human implements Movable, Runnable{
             }
             System.out.println(getName() + " и " + shorty.getName() + " немного отчистились: " + getName() + " -> " + degreeOfDirt + ", " + shorty.getName() + " -> " + shorty.degreeOfDirt);
         } else {
-            System.out.println(getName() + " уже здесь");
+//            System.out.println(getName() + " уже здесь");
         }
     }
 
@@ -218,7 +226,8 @@ public class Shorty extends Human implements Movable, Runnable{
         return degreeOfDirt*degreeOfWet;
     }
 
-    public void escape(){
-        changePlace(null);
+    public boolean equals(Shorty shorty) {
+        return ((name == shorty.getName())&&(hashCode() == shorty.hashCode()));
     }
+
 }

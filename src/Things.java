@@ -3,7 +3,6 @@ public class Things {
     private Place place = new Place("Someting");
     protected String name;
     protected boolean close_open = false;
-
     Things(String name, Place place){
         this.name = name;
         place.addThings(this);
